@@ -1,41 +1,46 @@
 <!DOCTYPE html>
-<form>
-	<label>
-      Gallons Requested:
-      <br>
-      <input type="text" name="gallonsRequested" value = "REQUIRED" required/>
-      <input type="submit">
-	</label>
-    <br>
-    <br>
-    <label>
-      Delivery Address:
-      <br>
-      <input type="text" name="deliveryAddress" value = "(userAddress)" readonly/>
-      <input type ="submit">
-    </label>
-    <br>
-    <br>
-    <label>
-      Delivery Date:
-      <br>
-      <input type="date" name="deliveryDate"/>
-      <input type ="submit">
-    </label>
-    <br>
-    <br>
-    <label>
-      Suggested Price Per Gallon:
-      <br>
-      <input type="text" name="pricePerGallon" value="(calculatedPrice)" readonly/>
-      <input type ="submit">
-    </label>
-    <br>
-    <br>
-    <label>
-      Total Amount Due:
-    <br>
-    <input type="text" name="totalDue" value="(gallons * pricePerGallon)" readonly/>
-    <input type ="submit">
-    </label>
-  </form>
+<html>
+    <body>
+        <h1>Fuel Quote Form</h1>
+        <form>
+            <label>
+                Gallons Requested:
+                <br>
+                <input type="text" name="gallonsRequested" value = "REQUIRED" required/>
+                <input type="submit">
+            </label>
+            <br>
+            <br>
+            <label>
+                Delivery Address:
+                <br>
+                <input type="text" name="deliveryAddress" value = "(userAddress)" readonly/>
+                <input type ="submit">
+            </label>
+            <br>
+            <br>
+            <label>
+                Delivery Date:
+                <br>
+                <input type="date" name="deliveryDate"/>
+                <input type ="submit">
+            </label>
+            <br>
+            <br>
+            <label>
+                Suggested Price Per Gallon:
+                <br>
+                <input type="text" name="pricePerGallon" value="(calculatedPrice)" readonly/>
+                <input type ="submit">
+            </label>
+            <br>
+            <br>
+            <label>
+                Total Amount Due:
+                <br>
+                <input type="text" name="totalDue" value="(gallons * pricePerGallon)" readonly/>
+                <input type ="submit">
+            </label>
+        </form>
+        </body>
+</html>
