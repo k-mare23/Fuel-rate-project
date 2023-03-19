@@ -38,13 +38,3 @@ input[type=text],input[type=email], input[type=date], input[type=number], input[
     background: rgba(255, 255, 255, 0.75);  
     border-radius: 15px ;
 }
-
-.container_long_page {
-    height:auto;
-    width: auto;  
-    margin: auto; 
-    padding: 30px;  
-    padding-bottom: 100px;
-    background: rgba(255, 255, 255, 0.75);  
-    border-radius: 15px ;
-  }
