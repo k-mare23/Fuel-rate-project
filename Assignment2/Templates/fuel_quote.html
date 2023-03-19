@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h1>Fuel Quote Form</h1>
+    <head>
+        <link rel = "icon" href = "../images/icon.png" type = "image/x-icon">  
+        <link rel="stylesheet" type="text/css" href="../styles/styling.css">   
+    </head>
+    <body> 
+        <center><h1 style="color: rgb(202, 11, 11); font-family: Yeseva One;">Fuel Quote Form</h1></center>
+        <div class="container">  
         <form>
             <label>
                 Gallons Requested:
                 <br>
                 <input type="text" name="gallonsRequested" value = "REQUIRED" required/>
-                <input type="submit">
+
             </label>
             <br>
             <br>
@@ -15,7 +20,6 @@
                 Delivery Address:
                 <br>
                 <input type="text" name="deliveryAddress" value = "(userAddress)" readonly/>
-                <input type ="submit">
             </label>
             <br>
             <br>
@@ -23,7 +27,7 @@
                 Delivery Date:
                 <br>
                 <input type="date" name="deliveryDate"/>
-                <input type ="submit">
+
             </label>
             <br>
             <br>
@@ -31,7 +35,7 @@
                 Suggested Price Per Gallon:
                 <br>
                 <input type="text" name="pricePerGallon" value="(calculatedPrice)" readonly/>
-                <input type ="submit">
+   
             </label>
             <br>
             <br>
@@ -39,8 +43,10 @@
                 Total Amount Due:
                 <br>
                 <input type="text" name="totalDue" value="(gallons * pricePerGallon)" readonly/>
-                <input type ="submit">
+
             </label>
+            <center><button type="submit">SUBMIT</button></center>
         </form>
+        </div>
         </body>
 </html>
