@@ -19,7 +19,7 @@ def get_price(state, request_frequent, request_gallons):
     results = [0, 0]
     return results
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/client_profile', methods=['GET', 'POST'])
 def client_profile():
     if request.method == 'POST':
         full_name = request.form.get('fullname')
@@ -46,7 +46,7 @@ def client_profile():
 
     user = User.query.get(current_user.id)
     profile_list = user.user_profile
-
+    
     if profile_list:
         if len(profile_list) > 1:
             del (profile_list[:-1])
