@@ -22,33 +22,35 @@ def get_price(state, request_frequent, request_gallons):
 @views.route('/client_profile', methods=['GET', 'POST'])
 def client_profile():
     if request.method == 'POST':
-        full_name = request.form.get('fullname')
+        full_name = request.form.get('fullname') #getting info. from front end
         address = request.form.get('address')
         address2 = request.form.get('address2')
         city = request.form.get('city')
         state = request.form.get('state')
         zip_code = request.form.get('zip code')
-        if len(full_name) < 1 or len(full_name) > 50:
-            flash('Full name must have at least 1 character and at most 50 characters.', category='error')
+        if len(full_name) < 1 or len(full_name) > 50: #making sure info. is entered correctly else give error
+            flash('Full name must be between 1 - 50 characters.', category='error')
         elif len(address) < 1 or len(address) > 100:
-            flash('Address must have at least 1 character and at most 100 characters.', category='error')
+            flash('Address must be between 1 - 100 characters.', category='error')
         elif len(city) < 1 or len(city) > 100:
-            flash('City must have at least 1 character and at most 100 characters.', category='error')
+            flash('City must be between 1 - 100 characters.', category='error')
         elif len(state) != 2:
             flash('Please select a state.', category='error')
         elif len(zip_code) < 5 or len(zip_code) > 9:
-            flash('Zipcode must have at least 5 characters at most 9 characters.', category='error')
+            flash('Zipcode must be between 5 - 9 characters.', category='error')
         else:
             print("Current user is ", current_user.id)
             user_profile = Profile(full_name=full_name, address=address, address2=address2, city=city,
                                        state=state, zipcode=zip_code, user_id=current_user.id)
-            flash('Created Profile Successfully', category = 'success')
+            #save user info. to database here
+            flash('Profile Successfully Saved', category = 'success')
+            return redirect(url_for('views.fuel_quote'))
 
     user = User.query.get(current_user.id)
     profile_list = user.user_profile
-    
-    if profile_list:
-        if len(profile_list) > 1:
+
+    if profile_list: #if profile exists, then are just displaying profile
+        if len(profile_list) > 1: #if more than one profile and just keep last profile
             del (profile_list[:-1])
         cur_profile_id = profile_list[0].id
         user_profile = Profile.query.get(cur_profile_id)
@@ -62,5 +64,5 @@ def client_profile():
         return render_template("client_profile.html", user=current_user, full_name=user_fullname, address=user_address,
                            address2=user_address2, city=user_city, state=user_state, zipcode=user_zipcode)
 
-    else:
+    else: #just show the current user if they did not creaate/update their profile
         return render_template("client_profile.html", user=current_user)

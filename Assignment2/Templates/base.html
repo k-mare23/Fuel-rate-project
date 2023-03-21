@@ -33,7 +33,7 @@
       
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated %} <!--When user logged in display these-->
 
           <a class="nav-item nav-link"
              id="myProfile" 
@@ -53,7 +53,7 @@
              id="fuel_quote" href="/fuel_quote"
           >Fuel Quote</a>
           
-          {% else %}
+          {% else %}  <!--When user logged out display these-->
           <a class="nav-item nav-link"
              id="login"
              href="/login"
