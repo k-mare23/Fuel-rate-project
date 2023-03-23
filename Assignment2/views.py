@@ -20,6 +20,7 @@ def get_price(state, request_frequent, request_gallons):
     return results
 
 @views.route('/client_profile', methods=['GET', 'POST'])
+@login_required
 def client_profile():
     if request.method == 'POST':
         full_name = request.form.get('fullname') #getting info. from front end
@@ -50,7 +51,7 @@ def client_profile():
     profile_list = user.user_profile
 
     if profile_list: #if profile exists, then are just displaying profile
-        if len(profile_list) > 1: #if more than one profile and just keep last profile
+        if len(profile_list) > 1: #if more than one profile then just keep last profile
             del (profile_list[:-1])
         cur_profile_id = profile_list[0].id
         user_profile = Profile.query.get(cur_profile_id)
@@ -64,7 +65,7 @@ def client_profile():
         return render_template("client_profile.html", user=current_user, full_name=user_fullname, address=user_address,
                            address2=user_address2, city=user_city, state=user_state, zipcode=user_zipcode)
 
-    else: #just show the current user if they did not creaate/update their profile
+    else: #just show the current user if they did not create/update their profile
         return render_template("client_profile.html", user=current_user)
 
 # Fuel Quote Form backend to obtain data from frontend form.
