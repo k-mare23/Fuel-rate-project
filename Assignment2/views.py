@@ -66,3 +66,38 @@ def client_profile():
 
     else: #just show the current user if they did not creaate/update their profile
         return render_template("client_profile.html", user=current_user)
+
+# Fuel Quote Form backend to obtain data from frontend form.
+@views.route('/fuel_quote', methods=['GET', 'POST'])
+@login_required
+def fuel_quote_form():
+    if request.method == 'POST':
+        # get user input for fuel quote
+        request_gallons = request.form.get('gallons_requested')
+        request_delivery_date = request.form.get('delivery_date')
+        gallons_requested =""
+
+        # calculate suggested price and total amount due
+        state = current_user.profile.state
+        suggested_price = 0 # pricing module will be implemented later
+        total_amount_due = float(request_gallons) * suggested_price
+
+        # save fuel quote later
+        gallons_requested=request_gallons
+        delivery_address=current_user.profile.address
+        delivery_date=request_delivery_date
+        suggested_price=suggested_price
+        total_amount_due=total_amount_due
+        user_id=current_user.id
+
+        return redirect(url_for('views.fuel_quote_history'))
+
+    return render_template('fuel_quote.html', user=current_user)
+
+@views.route('/fuel_quote_history')
+@login_required
+def fuel_quote_history():
+    # query database for user's fuel quote history
+    # quotes = FuelQuote.query.filter_by(user_id=current_user.id).all()
+
+    return render_template('fuel_quote_hist.html', user=current_user) #, quotes=quotes)
