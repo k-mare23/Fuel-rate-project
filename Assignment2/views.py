@@ -100,5 +100,13 @@ def fuel_quote_form():
 def fuel_quote_history():
     # query database for user's fuel quote history
     # quotes = FuelQuote.query.filter_by(user_id=current_user.id).all()
-
+    if request.method == 'GET':
+        start = request.args.get('start', default=0, type=int)
+        limit_url = request.args.get('limit', default=20, type=int)
+        questions = mongo.db.questions.find().limit(limit_url).skip(start);
+        data = [doc for doc in questions]
+        return jsonify(isError= False,
+                    message= "Success",
+                    statusCode= 200,
+                    data= data), 200
     return render_template('fuel_quote_hist.html', user=current_user) #, quotes=quotes)
