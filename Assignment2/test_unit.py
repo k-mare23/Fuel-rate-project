@@ -36,5 +36,5 @@ class Test(unittest.TestCase):
             response = requests.post('http://127.0.0.1:5000/client_profile',
                                  data={'fullname': 'abcd', 'address': 'abcd', 'address2': '1234',
                                        'city': 'Houston', 'state': 'TX', 'zipcode': '11'})
-            self.assertTrue('Zipcode must be between 5 and 9 characters.' in response.text)
+            self.assertTrue('Zip code must be between 5 and 9 characters.' in response.text)
         #end client profile module unit test
