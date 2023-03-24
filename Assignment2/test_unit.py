@@ -42,7 +42,7 @@ class Test(unittest.TestCase):
         
         
 class Test2(unittest.TestCase):
-        #client profile module unit test
+        
         def test_fuel_quote(self):
             response = requests.get('http://127.0.0.1:5000/fuel_quote')
             self.assertEqual(response.status_code, 200)
