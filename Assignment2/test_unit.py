@@ -38,3 +38,33 @@ class Test(unittest.TestCase):
                                        'city': 'Houston', 'state': 'TX', 'zipcode': '11'})
             self.assertTrue('Zip code must be between 5 and 9 characters.' in response.text)
         #end client profile module unit test
+        
+        
+        
+class Test2(unittest.TestCase):
+        #client profile module unit test
+        def test_fuel_quote(self):
+            response = requests.get('http://127.0.0.1:5000/fuel_quote')
+            self.assertEqual(response.status_code, 200)
+        
+        def test_request_gallons(self):
+            response = requests.post('http://127.0.0.1:5000/client_profile',
+                                 data={'request_gallons': '1000', 'request_delivery_date': '11/16/2000',
+                                       'total_amount_due': '5000',
+                                       'state': 'TX', 'city': 'Houston', 'zip code': '1111111'})
+            self.assertTrue('See how many gallons requested' in response.text)
+
+        def test_request_delivery_date(self):
+            response = requests.post('http://127.0.0.1:5000/client_profile',
+                                 data={'request_gallons': '1000', 'request_delivery_date': '11/16/2000',
+                                       'total_amount_due': '5000',
+                                       'state': 'TX', 'city': 'Houston', 'zip code': '1111111'})
+            self.assertTrue('See requested delivery date' in response.text)
+        def test_total_amount_due(self):
+            response = requests.post('http://127.0.0.1:5000/client_profile',
+                                 data={'request_gallons': '1000', 'request_delivery_date': '11/16/2000',
+                                       'total_amount_due': '5000',
+                                       'state': 'TX', 'city': 'Houston', 'zip code': '1111111'})
+            self.assertTrue('See total_amount_due' in response.text)
+
+        
