@@ -1,6 +1,9 @@
 import unittest
 import requests
-#import views
+from Fuel_go import views
+from Fuel_go import auth
+import random
+import string
 
 class Test(unittest.TestCase):
     def test_login(self):
