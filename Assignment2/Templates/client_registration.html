@@ -1,6 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+    Sign Up
+{% endblock %}
+{% block content%}
+
+  
 <head>  
     <link rel = "icon" href = "../images/icon.png" type = "image/x-icon">  
-    <link rel="stylesheet" type="text/css" href="../Styles/styling.css">   
+    <link rel="stylesheet" type="text/css" href="../static/styles/styling.css">   
     </head>
     
     <form method = "POST">   
@@ -41,10 +48,11 @@
                        <br>
                        <button type="submit">REGISTER</button> <br>
                        <center>       
-                       <h1 style="font-size:large" style="color:rgb(202, 11, 11)">Already have an account? <a href="login.html"> Sign in </a>  </h1>
+                       <h1 style="font-size:large" style="color:rgb(202, 11, 11)">Already have an account? <a href="login"> Sign in </a>  </h1>
                        </center>       
         </div>
         
     </body>     
       
     </form>
+    {% endblock %}

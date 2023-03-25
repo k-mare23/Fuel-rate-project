@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <link rel="stylesheet" href="../styles/styling.css">
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/styling.css') }}">
 
   <link rel = "icon" href = "../images/icon.png" type = "image/x-icon">
   
@@ -29,48 +29,30 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-sm bg-light justify-content-center">
+    <nav style="float: right;">
+      {% if user.is_authenticated %}
+
+      <a href="\client_profile">My Profile <span class="sr-only">(current)</span></a>
+
+      <a href="\fuel-quote">Fuel Quote <span class="sr-only">(current)</span></a>
+
+      <a href="\fuel-quote-history">Fuel History <span class="sr-only">(current)</span></a>
       
-      <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          {% if user.is_authenticated %} <!--When user logged in display these-->
+      <a href="\logout">Logout <span class="sr-only">(current)</span></a>
+      
 
-          <a class="nav-item nav-link"
-             id="myProfile" 
-             href="/client_profile">
-          Manage Profile</a>
+      {% else %}
 
-          <a class="nav-item nav-link"
-             id="history"
-             href="/fuel_quote_hist"
-          >Fuel History</a>
+      <a href="\login">Login<span class="sr-only">(current)</span></a>
 
-          <a class="nav-item nav-link"
-             id="logout" href="/logout"
-          >Logout</a>
-          
-          <a class="nav-item nav-link"
-             id="fuel_quote" href="/fuel_quote"
-          >Fuel Quote</a>
-          
-          {% else %}  <!--When user logged out display these-->
-          <a class="nav-item nav-link"
-             id="login"
-             href="/login"
-          >Login Page</a>
+      <a href="\client_registration">Sign Up <span class="sr-only">(current)</span></a>
 
-          <a class="nav-item nav-link"
-             id="signUp"
-             href="/client_registration"
-          >Sign Up</a>
+      {% endif %}
 
-          {% endif %}
-
-        </div>
-      </div>
     </nav>
 
   </header>
+
 
   
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -109,4 +91,33 @@
     ></script>
 
   </body>
+
+  <body>
+    <footer>
+        <a href="homepage">
+          <img src="static/images/LOGO2.png" alt="" class="footer-logo">
+        </a>
+
+      <div class = "footer-container"> 
+
+        <div class = "box">Awards</div>
+        <div class = "box">Join Us</div>
+        <div class = "box">Lets Connect</div>
+       
+        <div class = "box">About Us</div>
+        <div class = "box">Our Goals</div>
+        <div class = "box">Phone: 713-749-1411</div>
+
+        <div class = "box">Our locations</div>
+        <div class = "box">Our Mission</div>
+        <div class = "box">Email: WeDeliver@fuelGo.com</div>
+
+      </div>
+    
+    </footer>
+  </body>
+</html>
+
+
+
 </html>
