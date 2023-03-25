@@ -45,44 +45,35 @@ def create_profile():
     return render_template("client_profile.html", user=current_user)
 
 # Fuel Quote Form backend to obtain data from frontend form.
-@views.route('/fuel_quote', methods=['GET', 'POST'])
-@login_required
+@views.route('/fuel-quote', methods=['GET', 'POST'])
 def fuel_quote_form():
+    user = User.query.get(current_user.id)
+    profile_list = user.user_profile
+    cur_profile_id = profile_list[0].id
+    user_profile = Profile.query.get(cur_profile_id)
+    if user_profile.address2 == '':
+        user_address = user_profile.address1 + ', ' + user_profile.city
+    else:
+        user_address = user_profile.address1 + ', ' + user_profile.address2 + ', ' + user_profile.city
+    user_state = user_profile.state
+    print("the user's address is: ", user_address)
+    print("the user's state is: ", user_state)
+
     if request.method == 'POST':
-        # get user input for fuel quote
-        request_gallons = request.form.get('gallons_requested')
-        request_delivery_date = request.form.get('delivery_date')
-        gallons_requested =""
+        request_gallons = request.form.get('Total_Gallons_Requested')
+        request_date = request.form.get('delivery_date')
+        request_address = request.form.get('delivery_Address')
+        quote_history = Quote.query.get(current_user.id)
+        if quote_history:
+            history_flag = 1
+        else:
+            history_flag = 0
 
-        # calculate suggested price and total amount due
-        state = current_user.profile.state
-        suggested_price = 0 # pricing module will be implemented later
-        total_amount_due = float(request_gallons) * suggested_price
+        quote_result = get_price(user_state, history_flag, int(request_gallons))
+        print("suggest price is: ", quote_result[0], "total price is: ", quote_result[1])
+        global quote_info
+        quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
+        flash('Suggest price created!', category='success')
+        return redirect(url_for('views.fuel_quote_result'))
 
-        # save fuel quote later
-        gallons_requested=request_gallons
-        delivery_address=current_user.profile.address
-        delivery_date=request_delivery_date
-        suggested_price=suggested_price
-        total_amount_due=total_amount_due
-        user_id=current_user.id
-
-        return redirect(url_for('views.fuel_quote_history'))
-
-    return render_template('fuel_quote.html', user=current_user)
-
-@views.route('/fuel_quote_history')
-@login_required
-def fuel_quote_history():
-    # query database for user's fuel quote history
-    # quotes = FuelQuote.query.filter_by(user_id=current_user.id).all()
-    if request.method == 'GET':
-        start = request.args.get('start', default=0, type=int)
-        limit_url = request.args.get('limit', default=20, type=int)
-        questions = mongo.db.questions.find().limit(limit_url).skip(start);
-        data = [doc for doc in questions]
-        return jsonify(isError= False,
-                    message= "Success",
-                    statusCode= 200,
-                    data= data), 200
-    return render_template('fuel_quote_hist.html', user=current_user) #, quotes=quotes)
+    return render_template("quote.html", user=current_user, address=user_address, state=user_state)
