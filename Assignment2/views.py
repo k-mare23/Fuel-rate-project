@@ -77,3 +77,61 @@ def fuel_quote_form():
         return redirect(url_for('views.fuel_quote_result'))
 
     return render_template("quote.html", user=current_user, address=user_address, state=user_state)
+
+@views.route('/fuel-quote-result', methods=['GET', 'POST'])
+def fuel_quote_result():
+    global quote_info
+    print('fuel_quote ', quote_info)
+    if request.method == 'POST':
+        
+        new_quote_result = Quote(gallons_requested=quote_info[0],
+                                 delivery_address=quote_info[1],
+                                 date=quote_info[2],
+                                 suggest_price=quote_info[3],
+                                 total_price=quote_info[4], user_id=current_user.id
+                                 )
+        db.session.add(new_quote_result)
+        db.session.commit()
+
+        flash('Quote result added!', category='success')
+        return redirect(url_for('views.fuel_quote_history'))
+
+    return render_template("fuel_quote.html", user=current_user, gallons_requested=quote_info[0],
+                           delivery_address=quote_info[1], delivery_date=quote_info[2], suggest_price=quote_info[3],
+                           total_price=quote_info[4])
+
+
+@views.route('/fuel-quote-history', methods=['GET', 'POST'])
+def fuel_quote_history():
+    user = User.query.get(current_user.id)
+    history_list = user.user_quote
+    return render_template("fuel_quote_hist.html", user=current_user, history_list=history_list)
+
+
+
+
+@views.route('/homepage', methods=['GET', 'POST'])
+def homepage():
+    return render_template("login.html", user=current_user)
+
+
+@views.route('/home_login_page')
+def home_login():
+    logout_user()
+    return redirect(url_for('auth.login'))
+
+
+@views.route('/home_registration')
+def home_registration():
+    logout_user()
+    return redirect(url_for('auth.sign_up'))
+
+##########################################################################################
+def get_price(state, request_frequent, request_gallons):
+    # since we don't need to implement the price module for this assignment,
+    # we can just assign hyphons for suggested price and total amount due, and put those into 'results'  
+    # Pricing module will be implemented later
+ 
+    results =  ['--', '--']
+    
+    return results
