@@ -5,7 +5,9 @@ from Fuel_go import auth
 import random
 import string
 
-class Test(unittest.TestCase):
+
+class MyTestCase(unittest.TestCase):
+    # Ensure login behaves correctly given the correct credential
     def test_login(self):
         # Ensure that Flask was set up correctly
         response = requests.get('http://127.0.0.1:5000/login')
@@ -28,7 +30,10 @@ class Test(unittest.TestCase):
         response = requests.post('http://127.0.0.1:5000/login', data={'username': 'xyz', 'password1': '12345678'})
         response = requests.get('http://127.0.0.1:5000/')
         self.assertEqual(response.status_code, 200)
-        
+
+
+        ############################################################################################
+
     def test_sign_up(self):
         response = requests.get('http://127.0.0.1:5000/client_registration')
         self.assertEqual(response.status_code, 200)
@@ -67,7 +72,6 @@ class Test(unittest.TestCase):
         response = s.get('http://127.0.0.1:5000/logout')
         self.assertTrue('Logged out successfully!' in response.text)
 
-    
 ########################################################################################
 
     def test_create_profile(self):
@@ -175,6 +179,9 @@ class Test(unittest.TestCase):
         s.post('http://127.0.0.1:5000/loginpage', data={'username': 'xyz', 'password1': '12345678'})
         response = s.get('http://127.0.0.1:5000/fuel-quote-history')
         self.assertEqual(response.status_code, 200)
-        
+
+
+###########################################################################################################
+
 if __name__ == '__main__':
     unittest.main()

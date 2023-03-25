@@ -44,7 +44,6 @@ def create_profile():
 
     return render_template("client_profile.html", user=current_user)
 
-# Fuel Quote Form backend to obtain data from frontend form.
 @views.route('/fuel-quote', methods=['GET', 'POST'])
 def fuel_quote_form():
     user = User.query.get(current_user.id)
@@ -78,6 +77,7 @@ def fuel_quote_form():
 
     return render_template("quote.html", user=current_user, address=user_address, state=user_state)
 
+
 @views.route('/fuel-quote-result', methods=['GET', 'POST'])
 def fuel_quote_result():
     global quote_info
@@ -106,8 +106,6 @@ def fuel_quote_history():
     user = User.query.get(current_user.id)
     history_list = user.user_quote
     return render_template("fuel_quote_hist.html", user=current_user, history_list=history_list)
-
-
 
 
 @views.route('/homepage', methods=['GET', 'POST'])
