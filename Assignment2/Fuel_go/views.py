@@ -34,8 +34,10 @@ def create_profile():
             flash('Zipcode must be greater than 5 and no more than 9 characters.', category='error')
         else:
             print("current_user id is :", current_user.id)
-            new_user_profile = Profile(full_name=full_name, address1=address1, address2=address2, city=city,
-                                       state=state, zipcode=zipcode, user_id=current_user.id)
+            #new_user_profile = Profile(full_name= full_name, address1=address1, address2=address2, city=city,
+             #                          state=state, zipcode=zipcode, user_id=current_user.id)
+            new_user_profile = Profile(full_name= "ABC EFD", address1="1234", address2="567", city="Houston",
+                                       state="TX", zipcode="111111", user_id=current_user.id)
             db.session.add(new_user_profile)
             db.session.commit()
 
