@@ -1,6 +1,6 @@
-body {  
-  font-family: Calibri, Helvetica, sans-serif;  
-  background-color: lightblue;  
+body {
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: lightblue;
   margin: 0;
   padding: 20;
   background-image: url("../images/gas_station.jpg");
@@ -8,10 +8,9 @@ body {
   background-size: cover;
 }
 
-
 .navigation {
-	width: 80%;
-	margin: 0 auto;
+  width: 80%;
+  margin: 0 auto;
 }
 
 header {
@@ -21,24 +20,23 @@ header {
 }
 
 header::after {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
 
-.header-logo{
-  padding-top: 10px; 
-  padding-left: 30px; 
+.header-logo {
+  padding-top: 10px;
+  padding-left: 30px;
   width: 10rem;
-  float: left; 
+  float: left;
 }
-
 
 /* NAV TAB */
 nav {
   margin-top: 0px;
   padding: 24px;
-  background:rgb(43, 42, 42);
+  background: rgb(43, 42, 42);
   position: relative;
 }
 
@@ -46,7 +44,7 @@ nav a {
   transition: 0.3s ease;
   color: white;
   font-size: 22px;
-  font-family: 'Gill Sans';
+  font-family: "Gill Sans";
   text-decoration: none;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
@@ -61,148 +59,137 @@ nav a:hover {
   color: white;
   border-top: 4px solid white;
   border-bottom: 4px solid white;
-  padding: 6px 0; 
+  padding: 6px 0;
   position: relative;
 }
 
-
-
-
 /* FOOTER */
 
-.box{
+.box {
   width: auto;
   height: auto;
-  font-family: 'Gill Sans';
+  font-family: "Gill Sans";
 }
 
-.footer-container{
+.footer-container {
   padding-top: 10px;
   padding-left: 100px;
-  display: grid; 
-  grid-template-columns: 1fr 1fr 1fr; 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
- 
 footer {
   padding-top: 20px;
-  position: fixed; 
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px; 
+  height: 100px;
   padding: 3px;
   background-color: rgb(0, 0, 0);
   background-color: rgb(43, 42, 42);
   color: white;
-} 
+}
 
 footer::after {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
 
-.footer-logo{
+.footer-logo {
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-left: 30px; 
+  padding-left: 30px;
   width: 10rem;
-  float: left; 
+  float: left;
 }
 
+button {
+  background-color: #4caf50;
+  width: 100%;
+  color: white;
+  padding: 15px;
+  margin: 10px 0px;
+  border: none;
+  cursor: pointer;
+}
 
-button {   
-  background-color: #4CAF50;   
-  width: 100%;  
-  color: white;   
-  padding: 15px;   
-  margin: 10px 0px;   
-  border: none;   
-  cursor: pointer;   
-}   
-      
-input[type=text],input[type=email], input[type=date], input[type=number], input[type=password] {   
-  width: 100%;   
-  margin: 8px 0;  
-  padding: 10px 20px;   
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+input[type="password"] {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px 20px;
   box-shadow: 0 0 5px 1px;
-  border-radius: 10px; 
+  border-radius: 10px;
   display: inline-block;
-  border: 5px solid lightblue; 
-  box-sizing: border-box;    
+  border: 5px solid lightblue;
+  box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.9);
-}   
-   
-button:hover {   
-  opacity: 17;   
+}
+
+button:hover {
+  opacity: 17;
 }
 
 .container {
-  height:auto;
-  width: auto;  
+  height: auto;
+  width: auto;
   margin: auto;
-  padding: 30px;  
+  padding: 30px;
   padding-bottom: auto;
-  background: rgba(255, 255, 255, 0.75);  
-  border-radius: 15px ;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 15px;
 }
 
 .container_long_page {
-  height:auto;
-  width: auto;  
-  margin: auto; 
-  padding: 30px;  
+  height: auto;
+  width: auto;
+  margin: auto;
+  padding: 30px;
   padding-bottom: 100px;
-  background: rgba(255, 255, 255, 0.75);  
-  border-radius: 15px ;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 15px;
 }
-
 
 #page {
   margin-bottom: 61px;
 }
 
-
 .state {
   padding: 2.5px;
 }
 
-
-
 table {
   border-radius: 10px 10px 10px 10px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.20);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   text-align: center;
   width: auto;
 }
 
-
-
 .tablebox {
-  width: auto;  
-  overflow: auto;  
-  margin: auto;  
-  padding: 30px;  
+  width: auto;
+  overflow: auto;
+  margin: auto;
+  padding: 30px;
 }
 
-.tablebox thead tr{
+.tablebox thead tr {
   background-color: #009879;
 }
 
-
-
-.tablebox tbody tr{
+.tablebox tbody tr {
   border-bottom: 1px solid #dddddd;
 }
 
-.tablebox tbody tr:nth-of-type(odd){
+.tablebox tbody tr:nth-of-type(odd) {
   background-color: #0808080e;
 }
 
-.tablebox tbody tr:last-of-type{
+.tablebox tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
 }
-
-

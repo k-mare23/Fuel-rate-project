@@ -10,7 +10,9 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    return redirect(url_for('views.fuel_quote_form'))
+    return render_template("index.html")
+    #return redirect(url_for('views.fuel_quote_form'))
+
 
 @views.route('/client_profile', methods=['GET', 'POST'])
 def create_profile():
@@ -48,34 +50,20 @@ def create_profile():
 def fuel_quote_form():
     user = User.query.get(current_user.id)
     profile_list = user.user_profile
-    cur_profile_id = profile_list[0].id
-    user_profile = Profile.query.get(cur_profile_id)
-    if user_profile.address2 == '':
-        user_address = user_profile.address1 + ', ' + user_profile.city
-    else:
-        user_address = user_profile.address1 + ', ' + user_profile.address2 + ', ' + user_profile.city
-    user_state = user_profile.state
-    print("the user's address is: ", user_address)
-    print("the user's state is: ", user_state)
 
     if request.method == 'POST':
-        request_gallons = request.form.get('Total_Gallons_Requested')
-        request_date = request.form.get('delivery_date')
-        request_address = request.form.get('delivery_Address')
-        quote_history = Quote.query.get(current_user.id)
+        request_gallons = request.form.get('gallonsRequested')
+        request_date = request.form.get('date')
+        request_address = request.form.get('deliveryAddress')
+        quote_history = Quote.query.filter_by(user_id=current_user.id).first()
+
         if quote_history:
             history_flag = 1
         else:
             history_flag = 0
-
-        quote_result = get_price(user_state, history_flag, int(request_gallons))
-        print("suggest price is: ", quote_result[0], "total price is: ", quote_result[1])
-        global quote_info
-        quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
-        flash('Suggest price created!', category='success')
         return redirect(url_for('views.fuel_quote_result'))
 
-    return render_template("quote.html", user=current_user, address=user_address, state=user_state)
+    return render_template("fuel_quote.html", user=current_user)
 
 
 @views.route('/fuel-quote-result', methods=['GET', 'POST'])
