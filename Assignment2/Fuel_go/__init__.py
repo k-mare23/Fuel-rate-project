@@ -9,8 +9,8 @@ DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'xnskcndkv'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SECRET_KEY'] = 'afiowt'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite://///Users/alpha/Downloads/4353 Group project /front end/Project_Group18/Assignment2/Fuel_go/database.db'
     db.init_app(app)
 
     from .views import views
