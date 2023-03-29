@@ -10,7 +10,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template("index.html")
+    return render_template("homepage.html")
     #return redirect(url_for('views.fuel_quote_form'))
 
 

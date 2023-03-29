@@ -193,3 +193,13 @@ table {
 .tablebox tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
 }
+
+.social_container {
+  width: auto;  
+  height: auto;
+  overflow: hidden;  
+  margin: auto;  
+  padding: 30px;  
+  background: rgba(177, 224, 238, 0.411);  
+  border-radius: 15px ;
+}
