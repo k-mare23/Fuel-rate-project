@@ -6,11 +6,10 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
-
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'afiowt'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite://///Users/alpha/Downloads/4353 Group project /front end/Project_Group18/Assignment2/Fuel_go/database.db'
+    app.config['SECRET_KEY'] = '22bb317412548e3dcbf2b74e55da8e2b9d6824c3'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
     from .views import views
@@ -38,8 +37,8 @@ def create_app():
 def create_database(app):
     if not path.exists('Fuel_Go/' + DB_NAME):
         db.create_all(app=app)
-        print('Created Database!')
+        print('Database created successfully!')
         
 if __name__ == '__main__':
     app = create_app()
-    app.run(port=3000)
+    app.run()

@@ -24,27 +24,42 @@ def create_profile():
         state = request.form.get('state')
         zipcode = request.form.get('zipcode')
 
-        if len(full_name) < 2 or len(full_name) > 50:
-            flash('Full name must be greater than 2 and less than 50 characters.', category='error')
-        elif len(address1) < 2 or len(address1) > 100:
-            flash('Address must be greater than 2 and less than 100 characters.', category='error')
-        elif len(city) < 2 or len(city) > 100:
-            flash('City must be greater than 2 and less than 100 characters.', category='error')
+        if len(full_name) < 1 or len(full_name) > 50:
+            flash('Full name must be between 1 and 50 characters.', category='error')
+        elif len(address1) < 1 or len(address1) > 100:
+            flash('Address must be between 1 and 100 characters.', category='error')
+        elif len(city) < 1 or len(city) > 100:
+            flash('City must be between 1 and 100 characters.', category='error')
         elif len(state) != 2:
             flash('Reselect state.', category='error')
         elif len(zipcode) < 5 or len(zipcode) > 9:
-            flash('Zipcode must be greater than 5 and no more than 9 characters.', category='error')
+            flash('Zipcode must be between 5 and 9 characters.', category='error')
         else:
             print("current_user id is :", current_user.id)
-            #new_user_profile = Profile(full_name= full_name, address1=address1, address2=address2, city=city,
-             #                          state=state, zipcode=zipcode, user_id=current_user.id)
-            new_user_profile = Profile(full_name= "ABC EFD", address1="1234", address2="567", city="Houston",
-                                       state="TX", zipcode="111111", user_id=current_user.id)
+            new_user_profile = Profile(full_name= full_name, address1=address1, address2=address2, city=city,
+                                      state=state, zipcode=zipcode, user_id=current_user.id)
             db.session.add(new_user_profile)
             db.session.commit()
 
             flash('Profile created!', category='success')
             return redirect(url_for('views.fuel_quote_form'))
+    else: #update current user profile
+        user = User.query.get(current_user.id)
+        profile = user.user_profile
+        if profile:
+            if len(profile) > 1:
+                del (profile[:-1])
+            cur_profile_id = profile[0].id
+            user_profile = Profile.query.get(cur_profile_id)
+            user_address1 = user_profile.address1
+            user_address2 = user_profile.address2
+            user_city = user_profile.city
+            user_state = user_profile.state
+            user_zipcode = user_profile.zipcode
+            user_fullname = user_profile.full_name
+
+            return render_template('client_profile.html', user = current_user, full_name=user_fullname, address1=user_address1,
+                           address2=user_address2, city=user_city, state=user_state, zipcode=user_zipcode)
 
     return render_template("client_profile.html", user=current_user)
 
@@ -59,10 +74,18 @@ def fuel_quote_form():
         request_address = request.form.get('deliveryAddress')
         quote_history = Quote.query.filter_by(user_id=current_user.id).first()
 
-        if quote_history:
-            history_flag = 1
-        else:
-            history_flag = 0
+        if request_gallons <= 0:
+            flash("Gallons requested can not be 0 or under.", category = 'error')
+        if len(request_address) < 1:
+            flash('Enter a valid address.', category='error')
+        else: 
+            if quote_history:
+                history_flag = 1
+            else:
+                history_flag = 0
+            quote_result = get_price(request_gallons, history_flag) #Pricing module will be implemented later
+            global quote_info
+            quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
         return redirect(url_for('views.fuel_quote_result'))
 
     return render_template("fuel_quote.html", user=current_user)

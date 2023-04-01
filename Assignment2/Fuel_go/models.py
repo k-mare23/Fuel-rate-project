@@ -10,6 +10,9 @@ class User(db.Model, UserMixin):
     user_profile = db.relationship('Profile')
     user_quote = db.relationship('Quote')
 
+    def __repr__(self):
+        return f"User('{self.first_name}')"
+
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(50))
@@ -31,3 +34,6 @@ class Quote(db.Model):
     suggest_price = db.Column(db.String(10))
     total_price = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f"Quote('{self.delivery_address}')"

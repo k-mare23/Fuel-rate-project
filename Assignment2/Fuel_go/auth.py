@@ -35,8 +35,6 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-
-
 @auth.route('/client_registration', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
