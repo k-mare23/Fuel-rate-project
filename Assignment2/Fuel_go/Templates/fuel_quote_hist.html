@@ -1,16 +1,125 @@
+{% extends "base.html" %}
+{% block title %}
+    Fuel History
+{% endblock %}
+{% block content%}
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <link rel="stylesheet" href="../static/styles/fuel_quote_hist.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <h1>Fuel Quote History</h1>
+<html>
+    <head>
+        <link rel = "icon" href = "../static/images/icon.png" type = "image/x-icon">  
+        <link rel="stylesheet" type="text/css" href="../static/styles/styling.css">   
+    </head>
+    <body> 
+        <center><h1 style="color: rgb(202, 11, 11); font-family: Yeseva One;">Fuel Quote History</h1></center>
+        <div class="container">  
+            <h2>Add any lost history below</h2>
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">First Name</label>
+                </div>
+                <br>
+                <div class="col-75">
+                    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="lname">Last Name</label>
+                </div>
+                <br>
+                <div class="col-75">
+                    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="lname">Gallons Requested</label>
+                </div>
+                <br>
+                <div class="col-75">
+                    <input type="text" id="lname" name="lastname" placeholder="XXXX">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="lname">Delivery Address</label>
+                </div>
+                <br>
+                <div class="col-75">
+                    <input type="text" id="lname" name="lastname" placeholder="3000 Circle Dr">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="lname">Total Amount Due</label>
+                </div>
+                <br>
+                <div class="col-75">
+                    <input type="text" id="lname" name="lastname" placeholder="XXXX">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="country">Country</label>
+                </div>
+                <div class="col-75">
+                    <select id="country" name="country">
+                        <option value="australia">Australia</option>
+                        <option value="canada">Canada</option>
+                        <option value="usa">USA</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="subject">Subject</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" value="Submit">
+            </div>
+        </div>
+        <!-- Write me a table with all the labels above and put dummy values for them and center it on the page -->
+
+        <div id="tablediv">
+        <center>
+        <table id="fuelquotehisttable">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gallons Requested</th>
+                <th>Delivery Address</th>
+                <th>Total Amount Due</th>
+            </tr>
+            <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>100</td>
+                <td>3000 Circle Dr</td>
+                <td>$1000</td>
+            </tr>
+            <tr>
+                <td>Mary</td>
+                <td>Moe</td>
+                <td>50</td>
+                <td>3000 Circle Dr</td>
+                <td>$500</td>
+            </tr>
+            <tr>
+                <td>July</td>
+                <td>Dooley</td>
+                <td>75</td>
+                <td>3000 Circle Dr</td>
+                <td>$750</td>
+            </tr>
+        </body>
+        </center>
+                    
     </div>
-</body>
 </html>
+
+
+{% endblock %}
