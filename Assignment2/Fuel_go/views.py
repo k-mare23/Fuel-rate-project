@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
 from flask_login import login_required, current_user, logout_user
 from .models import Profile, User, Quote
-#from HelperFunction import PricingModel
+from .PricingModule import Price
 from . import db
 
 quote_info = []
@@ -68,6 +68,11 @@ def create_profile():
 def fuel_quote_form():
     user = User.query.get(current_user.id)
     profile_list = user.user_profile
+    if profile_list:
+        if len(profile_list) > 1:
+            del(profile_list[:-1])
+        curr_user = Profile.query.get(profile_list[0].id) #get current profile's user id
+        state = curr_user.state
 
     if request.method == 'POST':
         request_gallons = request.form.get('gallonsRequested')
@@ -85,7 +90,7 @@ def fuel_quote_form():
             else:
                 history_flag = 0
             
-            quote_result = get_price(request_gallons, history_flag) #Pricing module will be implemented later
+            quote_result = Price(request_gallons, history_flag, state) 
             global quote_info
             quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
         return redirect(url_for('views.fuel_quote_result'))
@@ -138,13 +143,3 @@ def home_login():
 def home_registration():
     logout_user()
     return redirect(url_for('auth.sign_up'))
-
-##########################################################################################
-def get_price(state, request_frequent, request_gallons):
-    # since we don't need to implement the price module for this assignment,
-    # we can just assign hyphons for suggested price and total amount due, and put those into 'results'  
-    # Pricing module will be implemented later
- 
-    results =  ['--', '--']
-    
-    return results

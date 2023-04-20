@@ -1,4 +1,4 @@
-class PricingModule:
+class Price:
     def __init__(self, gallons_requested, rate_history, state):
         self.gallons_requested = gallons_requested
         self.rate_history = rate_history
@@ -28,8 +28,8 @@ class PricingModule:
         suggested_price = curr_price + margin
         total_amount_due = self.gallons_requested * suggested_price
 
-        price = [suggested_price, total_amount_due]
+        prices = [suggested_price, total_amount_due]
 
-        return price
+        return prices
 
 
