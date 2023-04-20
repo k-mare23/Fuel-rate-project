@@ -74,26 +74,27 @@ def fuel_quote_form():
         curr_user = Profile.query.get(profile_list[0].id) #get current profile's user id
         state = curr_user.state
 
-    if request.method == 'POST':
-        request_gallons = request.form.get('gallonsRequested')
-        request_date = request.form.get('date')
-        request_address = request.form.get('deliveryAddress')
-        quote_history = Quote.query.filter_by(user_id=current_user.id).first()
+        if request.method == 'POST':
+            request_gallons = request.form.get('gallonsRequested')
+            request_date = request.form.get('date')
+            request_address = request.form.get('deliveryAddress')
+            quote_history = Quote.query.filter_by(user_id=current_user.id).first()
 
-        if request_gallons <= 0:
-            flash("Gallons requested can not be 0 or under.", category = 'error')
-        if len(request_address) < 1:
-            flash('Enter a valid address.', category='error')
-        else: 
-            if quote_history:
-                history_flag = 1
-            else:
-                history_flag = 0
-            
-            quote_result = Price(request_gallons, history_flag, state) 
-            global quote_info
-            quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
-        return redirect(url_for('views.fuel_quote_result'))
+            if request_gallons <= 0:
+                flash("Gallons requested can not be 0 or under.", category = 'error')
+            if len(request_address) < 1:
+                flash('Enter a valid address.', category='error')
+            else: 
+                if quote_history:
+                    history_flag = 1
+                else:
+                    history_flag = 0
+                
+                quote = Price(request_gallons, history_flag, state) 
+                quote_result = quote.price_per_gallon()
+                global quote_info
+                quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
+            return redirect(url_for('views.fuel_quote_result'))
 
     return render_template("fuel_quote.html", user=current_user)
 
