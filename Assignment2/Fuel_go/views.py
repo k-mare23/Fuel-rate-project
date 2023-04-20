@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
 from flask_login import login_required, current_user, logout_user
 from .models import Profile, User, Quote
+from HelperFunction import PricingModel
 from . import db
 
 quote_info = []
@@ -83,6 +84,7 @@ def fuel_quote_form():
                 history_flag = 1
             else:
                 history_flag = 0
+            
             quote_result = get_price(request_gallons, history_flag) #Pricing module will be implemented later
             global quote_info
             quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
