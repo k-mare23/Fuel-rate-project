@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
 from flask_login import login_required, current_user, logout_user
 from .models import Profile, User, Quote
-from HelperFunction import PricingModel
+#from HelperFunction import PricingModel
 from . import db
 
 quote_info = []
