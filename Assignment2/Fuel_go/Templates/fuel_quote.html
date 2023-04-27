@@ -1,59 +1,137 @@
-{% extends "base.html" %}
-{% block title %}
-    Get Quote
-{% endblock %}
-{% block content%}
-    
+{% extends "base.html" %} {% block title %} Get Quote {% endblock %} {% block
+content%}
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel = "icon" href = "../static/images/icon.png" type = "image/x-icon">  
-        <link rel="stylesheet" type="text/css" href="../static/styles/styling.css">   
-    </head>
-    <body> 
-        <center><h1 style="color: rgb(202, 11, 11); font-family: Yeseva One;">Fuel Quote Form</h1></center>
-        <div class="container">  
-        <form>
-            <label>
-                Gallons Requested:
-                <br>
-                <input type="text" name="gallonsRequested" value = "REQUIRED" required/>
+  <head>
+    <link rel="icon" href="../static/images/icon.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/styles/styling.css"
+    />
+    <style>
+      button:disabled {
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1 style="color: rgb(202, 11, 11); font-family: Yeseva One">
+        Fuel Quote Form
+      </h1>
+    </center>
+    <div class="container">
+      <form method="POST" action="{{ url_for('views.fuel_quote_result') }}">
+        <label>
+          Gallons Requested:
+          <br />
+          <input
+            type="text"
+            name="gallonsRequested"
+            placeholder="REQUIRED"
+            required
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Delivery Address:
+          <br />
+          <input
+            type="text"
+            name="deliveryAddress"
+            value="(userAddress)"
+            readonly
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Delivery Date:
+          <br />
+          <input type="date" name="deliveryDate" />
+        </label>
+        <br />
+        <br />
+        <label>
+          Suggested Price Per Gallon:
+          <br />
+          <input
+            type="text"
+            name="pricePerGallon"
+            value="(calculatedPrice)"
+            readonly
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Total Amount Due:
+          <br />
+          <input
+            type="text"
+            name="totalDue"
+            value="(gallons * pricePerGallon)"
+            readonly
+          />
+        </label>
+        <center>
+          <button id="get-quote-btn" type="button">Get Quote</button>
+        </center>
 
-            </label>
-            <br>
-            <br>
-            <label>
-                Delivery Address:
-                <br>
-                <input type="text" name="deliveryAddress" value = "(userAddress)" readonly/>
-            </label>
-            <br>
-            <br>
-            <label>
-                Delivery Date:
-                <br>
-                <input type="date" name="deliveryDate"/>
+        <center>
+          <button id="submit-btn" type="submit" disabled>SUBMIT</button>
+        </center>
+      </form>
+    </div>
+    <script>
+      const form = document.querySelector("form");
+      const getQuoteButton = document.querySelector("#get-quote-btn");
+      const submitButton = document.querySelector('button[type="submit"]');
 
-            </label>
-            <br>
-            <br>
-            <label>
-                Suggested Price Per Gallon:
-                <br>
-                <input type="text" name="pricePerGallon" value="(calculatedPrice)" readonly/>
-   
-            </label>
-            <br>
-            <br>
-            <label>
-                Total Amount Due:
-                <br>
-                <input type="text" name="totalDue" value="(gallons * pricePerGallon)" readonly/>
+      const pricePerGallonInput = document.querySelector(
+        'input[name="pricePerGallon"]'
+      );
+      const totalAmountDueInput = document.querySelector(
+        'input[name="totalDue"]'
+      );
 
-            </label>
-            <center><button type="submit">SUBMIT</button></center>
-        </form>
-        </div>
-        </body>
+      getQuoteButton.disabled = true;
+
+      // Enable "Get Quote" button if all fields are filled out except "Suggested Price Per Gallon" and "Total Amount Due"
+      form.addEventListener("input", () => {
+        const gallonsRequested = form.gallonsRequested.value.trim();
+        const deliveryAddress = form.deliveryAddress.value.trim();
+        const deliveryDate = form.deliveryDate.value.trim();
+
+        if (gallonsRequested && deliveryAddress && deliveryDate) {
+          getQuoteButton.disabled = false;
+        } else {
+          getQuoteButton.disabled = true;
+        }
+      });
+
+      // Call Price API and populate suggested price per gallon and total amount due when "Get Quote" button is clicked
+      getQuoteButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        const gallonsRequested = form.gallonsRequested.value.trim();
+        const state = "TX"; // Replace with user's state
+        const rateHistory = 1; // Replace with user's rate history
+
+        const response = await fetch(
+          `/get_price/${state}/${rateHistory}/${gallonsRequested}`
+        );
+        const [suggestedPricePerGallon, totalAmountDue] = await response.json();
+        pricePerGallonInput.value = suggestedPricePerGallon.toFixed(2);
+        totalAmountDueInput.value = totalAmountDue.toFixed(2);
+
+        getQuoteButton.disabled = true;
+        submitButton.disabled = false;
+      });
+    </script>
+  </body>
 </html>
 {% endblock %}

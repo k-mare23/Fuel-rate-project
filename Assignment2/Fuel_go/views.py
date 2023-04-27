@@ -1,7 +1,6 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
 from flask_login import login_required, current_user, logout_user
 from .models import Profile, User, Quote
-from .PricingModule import Price
 from . import db
 from datetime import datetime
 from datetime import date
@@ -114,25 +113,46 @@ def fuel_quote_form():
 
 @views.route('/fuel_quote', methods=['GET', 'POST'])
 def fuel_quote_result():
-    global quote_info
-    print('fuel_quote', quote_info)
     if request.method == 'POST':
-        
-        new_quote_result = Quote(gallons_requested=quote_info[0],
-                                 delivery_address=quote_info[1],
-                                 date=quote_info[2],
-                                 suggest_price=quote_info[3],
-                                 total_price=quote_info[4], user_id=current_user.id
-                                 )
+        gallons_requested = request.form['gallonsRequested']
+        #todo get the user db on the frontend to get the delivery address
+        delivery_address = request.form['deliveryAddress']
+        delivery_date = request.form['deliveryDate']
+        suggest_price = request.form['pricePerGallon']
+        total_price = request.form['totalDue']
+
+        new_quote_result = Quote(gallons_requested=gallons_requested,
+                                 date=delivery_date,
+                                 suggest_price=suggest_price,
+                                 total_price=total_price)
         db.session.add(new_quote_result)
         db.session.commit()
 
         flash('Quote result added!', category='success')
-        return redirect(url_for('views.fuel_quote_history'))
+        return redirect(url_for('views.homepage'))
 
-    return render_template("fuel_quote.html", user=current_user, gallons_requested=quote_info[0],
-                           delivery_address=quote_info[1], delivery_date=quote_info[2], suggest_price=quote_info[3],
-                           total_price=quote_info[4])
+    return render_template("fuel_quote.html", user=current_user)
+# @views.route('/fuel_quote', methods=['GET', 'POST'])
+# def fuel_quote_result():
+#     global quote_info
+#     print('fuel_quote', quote_info)
+#     if request.method == 'POST':
+        
+#         new_quote_result = Quote(gallons_requested=quote_info[0],
+#                                  delivery_address=quote_info[1],
+#                                  date=quote_info[2],
+#                                  suggest_price=quote_info[3],
+#                                  total_price=quote_info[4], user_id=current_user.id
+#                                  )
+#         db.session.add(new_quote_result)
+#         db.session.commit()
+
+#         flash('Quote result added!', category='success')
+#         return redirect(url_for('views.fuel_quote_history'))
+
+#     return render_template("fuel_quote.html", user=current_user, gallons_requested=quote_info[0],
+#                            delivery_address=quote_info[1], delivery_date=quote_info[2], suggest_price=quote_info[3],
+#                            total_price=quote_info[4])
 
 
 @views.route('/fuel-quote-history', methods=['GET', 'POST'])
@@ -182,7 +202,7 @@ def home_registration():
     logout_user()
     return redirect(url_for('auth.sign_up'))
 
-
+@views.route('/get_price/<string:state>/<int:request_frequent>/<int:request_gallons>', methods=['GET'])
 def get_price(state, request_frequent, request_gallons):   
     current_price = 1.5
     company_profit_factor = 0.1
