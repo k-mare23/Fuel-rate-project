@@ -28,10 +28,9 @@ def login():
 
 
 @auth.route('/logout')
-@login_required
 def logout():
-    flash('Logged out successfully!', category='success')
     logout_user()
+    flash('Logged out successfully!', category='success')
     return redirect(url_for('auth.login'))
 
 
@@ -46,8 +45,12 @@ def sign_up():
         print(email)
 
         user = User.query.filter_by(first_name=user_name).first()
+        email_id = User.query.filter_by(email=email).first()
+
         if user:
             flash('Username already exists.', category='error')
+        elif email_id:
+            flash('Email already exists.', category='error')
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 8:
