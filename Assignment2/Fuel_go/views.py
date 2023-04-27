@@ -1,7 +1,6 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
 from flask_login import login_required, current_user, logout_user
 from .models import Profile, User, Quote
-from .PricingModule import Price
 from . import db
 from datetime import datetime
 from datetime import date
