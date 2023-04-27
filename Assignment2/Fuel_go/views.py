@@ -181,3 +181,33 @@ def home_login():
 def home_registration():
     logout_user()
     return redirect(url_for('auth.sign_up'))
+
+
+def get_price(state, request_frequent, request_gallons):   
+    current_price = 1.5
+    company_profit_factor = 0.1
+
+    if state == 'TX':
+        location_factor = 0.02
+    else:
+        location_factor = 0.04
+
+    if request_frequent >= 1:
+        history_factor = 0.01
+    else:
+        history_factor = 0
+
+    if request_gallons > 1000:
+        gallon_factor = 0.02
+    else:
+        gallon_factor = 0.03
+
+    
+
+    margin = current_price * (location_factor - history_factor + gallon_factor + company_profit_factor)
+    suggested_price = current_price + margin
+    total_due = suggested_price * request_gallons
+
+    results = [round(suggested_price, 2), round(total_due, 2)]
+    
+    return results
