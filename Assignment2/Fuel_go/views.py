@@ -11,7 +11,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template("homepage.html")
+    return render_template("views.homepage")
     #return redirect(url_for('views.fuel_quote_form'))
 
 
@@ -44,25 +44,25 @@ def create_profile():
 
             flash('Profile created!', category='success')
             return redirect(url_for('views.fuel_quote_form'))
-    else: #update current user profile
-        user = User.query.get(current_user.id)
-        profile = user.user_profile
-        if profile:
-            if len(profile) > 1:
-                del (profile[:-1])
-            cur_profile_id = profile[0].id
-            user_profile = Profile.query.get(cur_profile_id)
-            user_address1 = user_profile.address1
-            user_address2 = user_profile.address2
-            user_city = user_profile.city
-            user_state = user_profile.state
-            user_zipcode = user_profile.zipcode
-            user_fullname = user_profile.full_name
+        
+    user = User.query.get(current_user.id)
+    profile = user.user_profile
+    if profile:
+        if len(profile) > 1:
+            del (profile[:-1])
+        cur_profile_id = profile[0].id
+        user_profile = Profile.query.get(cur_profile_id)
+        user_address1 = user_profile.address1
+        user_address2 = user_profile.address2
+        user_city = user_profile.city
+        user_state = user_profile.state
+        user_zipcode = user_profile.zipcode
+        user_fullname = user_profile.full_name
 
-            return render_template('client_profile.html', user = current_user, full_name=user_fullname, address1=user_address1,
-                           address2=user_address2, city=user_city, state=user_state, zipcode=user_zipcode)
-
-    return render_template("client_profile.html", user=current_user)
+        return render_template('client_profile.html', user = current_user, full_name=user_fullname, address1=user_address1,
+                            address2=user_address2, city=user_city, state=user_state, zipcode=user_zipcode)
+    else:
+        return render_template("client_profile.html", user=current_user)
 
 @views.route('/fuel-quote', methods=['GET', 'POST'])
 def fuel_quote_form():
@@ -128,10 +128,34 @@ def fuel_quote_history():
     history_list = user.user_quote
     return render_template("fuel_quote_hist.html", user=current_user, history_list=history_list)
 
+@views.route('/viewprofile', methods=['GET', 'POST'])
+def viewprofile():
+    user = User.query.get(current_user.id)
+    profile_list = user.user_profile
+    if profile_list:
+        if len(profile_list) > 1:
+            del (profile_list[:-1])
+        cur_profile_id = profile_list[0].id
+        user_profile = Profile.query.get(cur_profile_id)
+        if user_profile.address2 == '':
+            user_address = user_profile.address1
+        else:
+            user_address = user_profile.address1 + ', ' + user_profile.address2
+
+        user_city = user_profile.city
+        user_state = user_profile.state
+        user_zipcode = user_profile.zipcode
+        user_fullname = user_profile.full_name
+        user_idname = user.first_name
+
+        return render_template("viewprofile.html", user=current_user, user_name=user_idname, full_name=user_fullname, address=user_address,
+                           city=user_city, state=user_state, zipcode=user_zipcode)
+    else:
+        return render_template("viewprofile.html", user=current_user)
 
 @views.route('/homepage', methods=['GET', 'POST'])
 def homepage():
-    return render_template("login.html", user=current_user)
+    return render_template("homepage.html", user=current_user)
 
 
 @views.route('/home_login_page')
