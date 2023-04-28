@@ -111,6 +111,13 @@ def create_profile():
 #         flash('Please create a user profile with a valid address before filling the Quote Form!', category='error')
 #         return render_template("fuel_quote.html", user=current_user)
 
+@views.route('/user_quotes')
+def user_quotes():
+    user = User.query.get(current_user.id)
+    quotes = user.user_quote
+
+    return render_template('fuel_quote_hist.html', quotes=quotes, user=current_user)
+
 @views.route('/fuel_quote', methods=['GET', 'POST'])
 def fuel_quote_result():
     if request.method == 'POST':
@@ -125,7 +132,7 @@ def fuel_quote_result():
         suggest_price = request.form['pricePerGallon']
         total_price = request.form['totalDue']
 
-        new_quote_result = Quote(gallons_requested=gallons_requested,
+        new_quote_result = Quote(user_id=current_user.id, gallons_requested=gallons_requested,
                                  date=delivery_date,
                                  suggest_price=suggest_price,
                                  total_price=total_price, delivery_address=delivery_address)
