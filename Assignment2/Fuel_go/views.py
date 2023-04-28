@@ -43,7 +43,7 @@ def create_profile():
             db.session.commit()
 
             flash('Profile created!', category='success')
-            return redirect(url_for('views.fuel_quote_form'))
+            return redirect(url_for('views.fuel_quote_result'))
         
     user = User.query.get(current_user.id)
     profile = user.user_profile
@@ -64,58 +64,62 @@ def create_profile():
     else:
         return render_template("client_profile.html", user=current_user)
 
-@views.route('/fuel-quote', methods=['GET', 'POST'])
-def fuel_quote_form():
-    user = User.query.get(current_user.id)
-    profile_list = user.user_profile
-    if profile_list:
-        if len(profile_list) > 1:
-            del(profile_list[:-1])
-        cur_profile_id = profile_list[0].id
-        user_profile = Profile.query.get(cur_profile_id)
-        if user_profile.address2 == '':
-            user_address = user_profile.address1 + ', ' + user_profile.city
-        else:
-            user_address = user_profile.address1 + ', ' + user_profile.address2 + ', ' + user_profile.city
-        user_state = user_profile.state
-        user_zipcode = user_profile.zipcode
-        print("the user's address is: ", user_address)
-        print("the user's state is: ", user_state)
-        print("the user's zipcode is: ", user_zipcode)
+# @views.route('/fuel-quote', methods=['GET', 'POST'])
+# def fuel_quote_form():
+#     user = User.query.get(current_user.id)
+#     profile_list = user.user_profile
+#     if profile_list:
+#         if len(profile_list) > 1:
+#             del(profile_list[:-1])
+#         cur_profile_id = profile_list[0].id
+#         user_profile = Profile.query.get(cur_profile_id)
+#         if user_profile.address2 == '':
+#             user_address = user_profile.address1 + ', ' + user_profile.city
+#         else:
+#             user_address = user_profile.address1 + ', ' + user_profile.address2 + ', ' + user_profile.city
+#         user_state = user_profile.state
+#         user_zipcode = user_profile.zipcode
+#         print("the user's address is: ", user_address)
+#         print("the user's state is: ", user_state)
+#         print("the user's zipcode is: ", user_zipcode)
 
-        if request.method == 'POST':
-            request_gallons = request.form.get('Total_Gallons_Requested')
-            request_date = request.form.get('delivery_date')
-            request_address = request.form.get('delivery_Address')
-            today_date = date.today()
-            if float(request_gallons) < 0:
-                flash('Gallons Requested cannot be negative. Please enter a valid number!', category='error')
-            elif float(request_gallons) == 0:
-                flash('Gallons Requested cannot be zero. Please enter a valid number!', category='error')
-            elif datetime.strptime(request_date, '%Y-%m-%d').date() < today_date:
-                flash('Delivery Date cannot be a past date. Please enter a valid date!', category='error')
-            else:
-                quote_history = Quote.query.get(current_user.id)
-                if quote_history:
-                    history_flag = 1
-                else:
-                    history_flag = 0
-                quote_result = get_price(user_state, history_flag, float(request_gallons))
-                print("suggest price is: ", quote_result[0], "total price is: ", quote_result[1])
-                global quote_info
-                quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
-                flash('Suggest price created!', category='success')
-                return redirect(url_for('views.fuel_quote_result'))
-        return render_template("fuel_quote.html", user=current_user, address=user_address, state=user_state, zipcode=user_zipcode)
-    else:
-        flash('Please create a user profile with a valid address before filling the Quote Form!', category='error')
-        return render_template("fuel_quote.html", user=current_user)
+#         if request.method == 'POST':
+#             request_gallons = request.form.get('Total_Gallons_Requested')
+#             request_date = request.form.get('delivery_date')
+#             request_address = request.form.get('delivery_Address')
+#             today_date = date.today()
+#             if float(request_gallons) < 0:
+#                 flash('Gallons Requested cannot be negative. Please enter a valid number!', category='error')
+#             elif float(request_gallons) == 0:
+#                 flash('Gallons Requested cannot be zero. Please enter a valid number!', category='error')
+#             elif datetime.strptime(request_date, '%Y-%m-%d').date() < today_date:
+#                 flash('Delivery Date cannot be a past date. Please enter a valid date!', category='error')
+#             else:
+#                 quote_history = Quote.query.get(current_user.id)
+#                 if quote_history:
+#                     history_flag = 1
+#                 else:
+#                     history_flag = 0
+#                 quote_result = get_price(user_state, history_flag, float(request_gallons))
+#                 print("suggest price is: ", quote_result[0], "total price is: ", quote_result[1])
+#                 global quote_info
+#                 quote_info = [request_gallons, request_address, request_date, quote_result[0], quote_result[1]]
+#                 flash('Suggest price created!', category='success')
+#                 return redirect(url_for('views.fuel_quote_result'))
+#         return render_template("fuel_quote.html", user=current_user, address=user_address, state=user_state, zipcode=user_zipcode)
+#     else:
+#         flash('Please create a user profile with a valid address before filling the Quote Form!', category='error')
+#         return render_template("fuel_quote.html", user=current_user)
 
 @views.route('/fuel_quote', methods=['GET', 'POST'])
 def fuel_quote_result():
     if request.method == 'POST':
+        user = User.query.get(current_user.id)
+        profile = user.user_profile
+        cur_profile_id = profile[0].id
+        user_profile = Profile.query.get(cur_profile_id)
+
         gallons_requested = request.form['gallonsRequested']
-        #todo get the user db on the frontend to get the delivery address
         delivery_address = request.form['deliveryAddress']
         delivery_date = request.form['deliveryDate']
         suggest_price = request.form['pricePerGallon']
@@ -124,14 +128,14 @@ def fuel_quote_result():
         new_quote_result = Quote(gallons_requested=gallons_requested,
                                  date=delivery_date,
                                  suggest_price=suggest_price,
-                                 total_price=total_price)
+                                 total_price=total_price, delivery_address=delivery_address)
         db.session.add(new_quote_result)
         db.session.commit()
 
         flash('Quote result added!', category='success')
         return redirect(url_for('views.homepage'))
-
-    return render_template("fuel_quote.html", user=current_user)
+    num_quotes = len(current_user.user_quote)
+    return render_template("fuel_quote.html", user=current_user, address1=current_user.user_profile[0].address1, state=current_user.user_profile[0].state, rateHistory = num_quotes)
 # @views.route('/fuel_quote', methods=['GET', 'POST'])
 # def fuel_quote_result():
 #     global quote_info

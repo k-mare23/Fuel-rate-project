@@ -42,7 +42,7 @@ content%}
           <input
             type="text"
             name="deliveryAddress"
-            value="(userAddress)"
+            value="{{address1}}"
             readonly
           />
         </label>
@@ -118,8 +118,8 @@ content%}
         event.preventDefault();
 
         const gallonsRequested = form.gallonsRequested.value.trim();
-        const state = "TX"; // Replace with user's state
-        const rateHistory = 1; // Replace with user's rate history
+        const state = "{{state}}"; // Replace with user's state
+        const rateHistory = "{{rateHistory}}"; // Replace with user's rate history
 
         const response = await fetch(
           `/get_price/${state}/${rateHistory}/${gallonsRequested}`
