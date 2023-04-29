@@ -142,28 +142,8 @@ def fuel_quote_result():
         flash('Quote result added!', category='success')
         return redirect(url_for('views.homepage'))
     num_quotes = len(current_user.user_quote)
-    return render_template("fuel_quote.html", user=current_user, address1=current_user.user_profile[0].address1, state=current_user.user_profile[0].state, rateHistory = num_quotes)
-# @views.route('/fuel_quote', methods=['GET', 'POST'])
-# def fuel_quote_result():
-#     global quote_info
-#     print('fuel_quote', quote_info)
-#     if request.method == 'POST':
-        
-#         new_quote_result = Quote(gallons_requested=quote_info[0],
-#                                  delivery_address=quote_info[1],
-#                                  date=quote_info[2],
-#                                  suggest_price=quote_info[3],
-#                                  total_price=quote_info[4], user_id=current_user.id
-#                                  )
-#         db.session.add(new_quote_result)
-#         db.session.commit()
-
-#         flash('Quote result added!', category='success')
-#         return redirect(url_for('views.fuel_quote_history'))
-
-#     return render_template("fuel_quote.html", user=current_user, gallons_requested=quote_info[0],
-#                            delivery_address=quote_info[1], delivery_date=quote_info[2], suggest_price=quote_info[3],
-#                            total_price=quote_info[4])
+    return render_template("fuel_quote.html", user=current_user, address1=current_user.user_profile[0].address1, 
+                           state=current_user.user_profile[0].state, rateHistory = num_quotes)
 
 
 @views.route('/fuel-quote-history', methods=['GET', 'POST'])
